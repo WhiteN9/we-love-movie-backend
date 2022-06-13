@@ -1,4 +1,14 @@
 const knex = require("../db/connection");
+const mapProperties = require("../utils/map-properties");
+
+const addCategory = mapProperties({
+  critic_id: "critic.critic_id",
+  preferred_name: "critic.preferred_name",
+  surname: "critic.surname",
+  organization_name: "critic.organization_name",
+  created_at: "critic.created_at",
+  updated_at: "critic.updated_at",
+});
 
 function list() {
   return knex("movies AS m").select("*");
@@ -28,11 +38,24 @@ function listTheatersByMovie(movie_id) {
 }
 
 function listReviewsByMovie(movie_id) {
-  return knex("movies AS m")
-    .join("reviews AS r", "r.movie_id", "=", "m.movie_id")
-    .join("critics AS c", "c.critic_id", "=", "r.critic_id")
-    .select("r.*", "c.organization_name", "c.preferred_name", "c.surname")
-    .where({ "r.movie_id": movie_id });
+  return (
+    knex("movies AS m")
+      .join("reviews AS r", "r.movie_id", "=", "m.movie_id")
+      .join("critics AS c", "c.critic_id", "=", "r.critic_id")
+      .select("r.*", "c.*")
+      .where({ "r.movie_id": movie_id })
+      // .first()
+      // .then(addCategory)
+
+      // .then((datas) => {
+      //   return datas;
+      // });
+      .then((datas) => {
+        return datas.map((data) => {
+          return addCategory(data);
+        });
+      })
+  );
 }
 
 module.exports = {
