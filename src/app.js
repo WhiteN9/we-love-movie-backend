@@ -4,11 +4,11 @@ const app = express();
 const notFound = require("./errors/notFound");
 const errorHandler = require("./errors/errorHandler");
 
+const moviesRouter = require("./movies/movies.router");
 app.use(express.json());
 
-module.exports = app;
-
 //App routers
+app.use("/movies", moviesRouter);
 
 app.use(notFound);
 app.use(errorHandler);
