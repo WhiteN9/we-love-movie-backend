@@ -5,7 +5,10 @@ function update(review_id) {
 }
 
 function destroy(review_id) {
-  return knex("reviews").select("*");
+  return knex("reviews").where({ review_id: review_id }).del();
 }
 
-module.exports = { update, delete: [destroy] };
+function read(review_id) {
+  return knex("reviews").select("*").where({ review_id }).first();
+}
+module.exports = { update, delete: destroy, read };
