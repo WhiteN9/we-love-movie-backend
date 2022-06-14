@@ -16,8 +16,11 @@ function update(updatedReview) {
     .join("critics AS c", "c.critic_id", "=", "r.critic_id")
     .select("*")
     .where({ "r.review_id": updatedReview.review_id })
-    .update(updatedReview, "*")
-    .then((updatedRecord) => addCritic(updatedRecord))
+    .update(updatedReview)
+    .returning("*")
+
+    .then((updatedRecord) => updatedRecord[0])
+    .then((updatedRecord) => addCritic(updatedRecord));
   // .then((updatedReview) => {
   //   return { data: updatedReview };
   // })

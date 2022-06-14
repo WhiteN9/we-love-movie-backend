@@ -1,10 +1,17 @@
 const router = require("express").Router();
 const controller = require("./movies.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed");
+const cors = require("cors");
 
-router.route("/").get(controller.list).all(methodNotAllowed);
+const corsOptions = cors({ methods: "GET" });
 
-router.route("/:movieId").get(controller.read).all(methodNotAllowed);
+router
+  .route("/")
+  .get(corsOptions, controller.list)
+  .options(corsOptions)
+  .all(methodNotAllowed);
+
+router.route("/:movieId").get(cors(), controller.read).all(methodNotAllowed);
 
 router
   .route("/:movieId/theaters")

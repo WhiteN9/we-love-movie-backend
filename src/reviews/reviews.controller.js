@@ -1,4 +1,5 @@
 const service = require("./reviews.service");
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 async function update(req, res) {
   const updatedReview = {
@@ -28,6 +29,6 @@ async function reviewExists(req, res, next) {
 }
 
 module.exports = {
-  update: [reviewExists, update],
-  delete: [reviewExists, destroy],
+  update: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(update)],
+  delete: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)],
 };
