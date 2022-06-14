@@ -1,5 +1,14 @@
 const service = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+// const hasProperties = require("../errors/hasProperties");
+// const hasRequiredProperties = hasProperties(
+//   "review_score",
+//   "review_content",
+//   "review_critic_id",
+//   "review_movie_id",
+//   "review_created_at",
+//   "review_updated_at"
+// );
 
 async function update(req, res) {
   const updatedReview = {
@@ -8,8 +17,8 @@ async function update(req, res) {
   };
   // console.log(updatedReview);
   const data = await service.update(updatedReview);
-  console.log(data);
-  res.json({ data: data });
+  console.log("Real return Data", data);
+  res.status(201).json({ data: data });
 }
 
 async function destroy(req, res) {
@@ -29,6 +38,9 @@ async function reviewExists(req, res, next) {
 }
 
 module.exports = {
-  update: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(update)],
+  update: [
+    asyncErrorBoundary(reviewExists),
+    asyncErrorBoundary(update),
+  ],
   delete: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)],
 };
