@@ -1,14 +1,5 @@
 const service = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
-// const hasProperties = require("../errors/hasProperties");
-// const hasRequiredProperties = hasProperties(
-//   "review_score",
-//   "review_content",
-//   "review_critic_id",
-//   "review_movie_id",
-//   "review_created_at",
-//   "review_updated_at"
-// );
 
 async function update(req, res) {
   const updatedReview = {
