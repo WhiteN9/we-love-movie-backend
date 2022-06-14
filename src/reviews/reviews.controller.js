@@ -1,7 +1,14 @@
 const service = require("./reviews.service");
 
 async function update(req, res) {
-  res.json({ data: {} });
+  const updatedReview = {
+    ...res.locals.review,
+    ...req.body.data,
+  };
+  // console.log(updatedReview);
+  const data = await service.update(updatedReview);
+  console.log(data);
+  res.json({ data: data });
 }
 
 async function destroy(req, res) {
