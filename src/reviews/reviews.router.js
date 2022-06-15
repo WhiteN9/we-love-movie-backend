@@ -3,13 +3,13 @@ const controller = require("./reviews.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed");
 const cors = require("cors");
 
-const corsDelete = cors({ methods: "DELETE" });
+const corsOptions = cors({ methods: ["PUT", "DELETE"] });
 
 router
   .route("/:reviewId")
-  .put(controller.update)
-  .delete(corsDelete, controller.delete)
-  .options(corsDelete)
+  .put(corsOptions, controller.update)
+  .delete(corsOptions, controller.delete)
+  .options(corsOptions)
   .all(methodNotAllowed);
 
 module.exports = router;

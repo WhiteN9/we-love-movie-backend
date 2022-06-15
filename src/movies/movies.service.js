@@ -11,7 +11,7 @@ const addCategory = mapProperties({
 });
 
 function list() {
-  return knex("movies AS m").select("*");
+  return knex("movies").select();
 }
 
 function listShowingMovies() {
@@ -19,7 +19,7 @@ function listShowingMovies() {
     knex("movies AS m")
       .join("movies_theaters AS mt", "mt.movie_id", "=", "m.movie_id")
       //might need to select matching column with groupBy depend on PostgreSQL
-      .select("*")
+      .select("mt.movie_id")
       .where({ "mt.is_showing": true })
       .groupBy("mt.movie_id")
   );
