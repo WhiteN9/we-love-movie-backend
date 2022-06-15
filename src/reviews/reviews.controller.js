@@ -1,28 +1,26 @@
 const service = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
+//update a review, and then return the updated record with the critic's information
 async function update(req, res) {
-  // console.log(res.locals.review);
-  // console.log(req.body.data);
   const updatedReview = {
     ...res.locals.review,
     ...req.body.data,
   };
-  // console.log(updatedReview);
   const data = await service.update(updatedReview);
-  console.log("Real return Data", data);
   res.status(201).json({ data: data });
 }
 
+//delete a review by its id
 async function destroy(req, res) {
   await service.delete(res.locals.review.review_id);
   res.status(204).json({ data: {} });
 }
 
+/////// MIDDLEWARE //////////
+//check if the review exists by the review id
 async function reviewExists(req, res, next) {
-  // console.log(req.params.reviewId);
   const review = await service.read(req.params.reviewId);
-  // console.log(review);
   if (review) {
     res.locals.review = review;
     return next();

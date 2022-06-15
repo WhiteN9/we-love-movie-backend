@@ -1,7 +1,8 @@
 const knex = require("../db/connection");
 const mapProperties = require("../utils/map-properties");
 
-const addCategory = mapProperties({
+//put the key-value pair properties into one object 
+const addCritic = mapProperties({
   critic_id: "critic.critic_id",
   preferred_name: "critic.preferred_name",
   surname: "critic.surname",
@@ -18,7 +19,6 @@ function listShowingMovies() {
   return (
     knex("movies AS m")
       .join("movies_theaters AS mt", "mt.movie_id", "=", "m.movie_id")
-      //might need to select matching column with groupBy depend on PostgreSQL
       .select("m.*")
       .where({ "mt.is_showing": true })
       .groupBy("m.movie_id")
@@ -44,15 +44,9 @@ function listReviewsByMovie(movie_id) {
       .join("critics AS c", "c.critic_id", "=", "r.critic_id")
       .select("r.*", "c.*")
       .where({ "r.movie_id": movie_id })
-      // .first()
-      // .then(addCategory)
-
-      // .then((datas) => {
-      //   return datas;
-      // });
       .then((datas) => {
         return datas.map((data) => {
-          return addCategory(data);
+          return addCritic(data);
         });
       })
   );
