@@ -9,7 +9,7 @@ router
   .route("/:reviewId")
   .put(corsOptions, controller.update)
   .delete(corsOptions, controller.delete)
-
+  .options(corsOptions)
   .all(methodNotAllowed);
 
 module.exports = router;
