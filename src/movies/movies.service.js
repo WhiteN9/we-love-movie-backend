@@ -19,9 +19,9 @@ function listShowingMovies() {
     knex("movies AS m")
       .join("movies_theaters AS mt", "mt.movie_id", "=", "m.movie_id")
       //might need to select matching column with groupBy depend on PostgreSQL
-      .select("mt.movie_id")
+      .select("m.*")
       .where({ "mt.is_showing": true })
-      .groupBy("mt.movie_id")
+      .groupBy("m.movie_id")
   );
 }
 
